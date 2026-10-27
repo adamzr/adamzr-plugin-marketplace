@@ -1,0 +1,42 @@
+{
+  "name": "usage-awareness",
+  "version": "0.1.0",
+  "description": "Lets Claude see its own rate limits, reset times, session cost and extra-usage credits, warns it at milestones, and enforces per-session spend ceilings you set.",
+  "author": {
+    "name": "Adam Richeimer"
+  },
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "warnPercent": {
+      "type": "number",
+      "title": "Warn at %",
+      "description": "First heads-up: start wrapping up and plan a checkpoint.",
+      "default": 80
+    },
+    "criticalPercent": {
+      "type": "number",
+      "title": "Critical at %",
+      "description": "Save progress now and ask before continuing into extra usage.",
+      "default": 95
+    },
+    "allowExtraUsage": {
+      "type": "boolean",
+      "title": "Allow extra usage by default",
+      "description": "When false, the mod blocks once a window is exhausted until you lift it with /usage-aware lift.",
+      "default": false
+    },
+    "enforce": {
+      "type": "boolean",
+      "title": "Enforce ceilings",
+      "description": "When true, a hard ceiling denies tool calls and aborts the running turn. When false, the mod only warns.",
+      "default": true
+    },
+    "pollMinutes": {
+      "type": "number",
+      "title": "Usage endpoint poll interval (minutes)",
+      "description": "How often to refresh per-model windows and extra-usage credits from the claude.ai usage endpoint.",
+      "default": 5
+    }
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "adamzr-plugin-marketplace",
+  "owner": {
+    "name": "Adam Richeimer"
+  },
+  "description": "Claude Code plugins and mods by Adam Richeimer.",
+  "plugins": [
+    {
+      "name": "usage-awareness",
+      "source": "./plugins/usage-awareness",
+      "description": "Makes Claude Code aware of its own rate limits, reset times, session cost and extra-usage credits, with warnings and enforceable per-session ceilings."
+    }
+  ]
+}
