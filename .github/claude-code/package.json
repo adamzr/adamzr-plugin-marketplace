@@ -1,0 +1,8 @@
+{
+  "name": "ci-claude-code",
+  "private": true,
+  "description": "Pins the Claude Code CLI that CI uses to validate and test plugins.",
+  "dependencies": {
+    "@anthropic-ai/claude-code": "2.1.311"
+  }
+}

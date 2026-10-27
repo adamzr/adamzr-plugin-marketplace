@@ -1,10 +1,21 @@
 {
   "name": "usage-awareness",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Lets Claude see its own rate limits, reset times, session cost and extra-usage credits, warns it at milestones, and enforces per-session spend ceilings you set.",
   "author": {
-    "name": "Adam Richeimer"
+    "name": "Adam Richeimer",
+    "url": "https://github.com/adamzr"
   },
+  "homepage": "https://github.com/adamzr/adamzr-plugin-marketplace/tree/main/plugins/usage-awareness",
+  "repository": "https://github.com/adamzr/adamzr-plugin-marketplace",
+  "license": "MIT",
+  "keywords": [
+    "usage",
+    "rate-limits",
+    "cost",
+    "credits",
+    "mod"
+  ],
   "types": "./types/index.d.ts",
   "userConfig": {
     "warnPercent": {
@@ -37,6 +48,5 @@
       "description": "How often to refresh per-model windows and extra-usage credits from the claude.ai usage endpoint.",
       "default": 5
     }
-  },
-  "license": "MIT"
+  }
 }

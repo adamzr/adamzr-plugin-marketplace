@@ -1,14 +1,31 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
   "name": "adamzr-plugin-marketplace",
   "owner": {
-    "name": "Adam Richeimer"
+    "name": "Adam Richeimer",
+    "url": "https://github.com/adamzr"
   },
   "description": "Claude Code plugins and mods by Adam Richeimer.",
   "plugins": [
     {
       "name": "usage-awareness",
       "source": "./plugins/usage-awareness",
-      "description": "Makes Claude Code aware of its own rate limits, reset times, session cost and extra-usage credits, with warnings and enforceable per-session ceilings."
+      "description": "Makes Claude Code aware of its own rate limits, reset times, session cost and extra-usage credits, with warnings and enforceable per-session ceilings.",
+      "version": "0.1.1",
+      "author": {
+        "name": "Adam Richeimer",
+        "url": "https://github.com/adamzr"
+      },
+      "homepage": "https://github.com/adamzr/adamzr-plugin-marketplace/tree/main/plugins/usage-awareness",
+      "repository": "https://github.com/adamzr/adamzr-plugin-marketplace",
+      "license": "MIT",
+      "keywords": [
+        "usage",
+        "rate-limits",
+        "cost",
+        "credits",
+        "mod"
+      ]
     }
   ]
 }
