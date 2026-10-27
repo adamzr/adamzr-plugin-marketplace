@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugins:
+    name: Validate plugins
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # scripts/validate.py --since needs history to find the merge base.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          package-manager-cache: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+
+      - run: pip install -r .github/requirements-ci.txt
+
+      # `claude plugin validate` and `claude plugin test` read local files only and need
+      # no authentication.
+      # Pinned in .github/claude-code/package-lock.json, which Dependabot keeps current.
+      - name: Install Claude Code
+        working-directory: .github/claude-code
+        run: |
+          npm ci
+          echo "$PWD/node_modules/.bin" >> "$GITHUB_PATH"
+
+      - name: Claude Code - marketplace manifest (strict)
+        run: claude plugin validate --strict .
+
+      - name: Claude Code - plugin manifests, hooks and mod modules (strict)
+        run: |
+          set -euo pipefail
+          for plugin in plugins/*/; do
+            echo "::group::${plugin}"
+            claude plugin validate --strict "$plugin"
+            echo "::endgroup::"
+          done
+
+      - name: Claude Code - mod tests
+        run: |
+          set -euo pipefail
+          for plugin in plugins/*/; do
+            if [ -n "$(find "$plugin" -name '*.test.ts' -o -name '*.test.tsx' | head -n 1)" ]; then
+              echo "::group::${plugin}"
+              claude plugin test "$plugin"
+              echo "::endgroup::"
+            fi
+          done
+
+      - name: Agent Plugins conformance, manifest sync and version bumps
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          if [ -n "$BASE_REF" ]; then
+            python3 scripts/validate.py --since "$BASE_REF"
+          else
+            python3 scripts/validate.py
+          fi
+
+  scripts:
+    name: Lint scripts
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: '3.13'
+
+      - run: pip install -r .github/requirements-ci.txt
+
+      - name: ShellCheck
+        run: |
+          set -euo pipefail
+          mapfile -t files < <(git ls-files '*.sh' '*.bash')
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No shell scripts."
+          else
+            shellcheck "${files[@]}"
+          fi
+
+      - name: Ruff lint
+        run: ruff check --output-format=github .
+
+      - name: Ruff format
+        run: ruff format --check .
+
+  workflows:
+    name: Audit workflows
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # actionlint also runs ShellCheck over every `run:` block.
+      - name: actionlint
+        run: |
+          set -euo pipefail
+          go install github.com/rhysd/actionlint/cmd/actionlint@v1.7.12
+          "$(go env GOPATH)/bin/actionlint" -color
+
+      - name: zizmor
+        uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+        with:
+          version: 1.31.1
+          persona: pedantic
+          advanced-security: false

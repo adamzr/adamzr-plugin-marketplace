@@ -1,0 +1,47 @@
+name: Bug report
+description: Something in a plugin does not work as documented.
+labels: [bug]
+body:
+  - type: dropdown
+    id: plugin
+    attributes:
+      label: Plugin
+      options:
+        - usage-awareness
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Plugin version (from `/plugin`) and Claude Code version (`claude --version`).
+      placeholder: usage-awareness 0.1.1, Claude Code 2.1.311
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where you run Claude Code
+      options:
+        - Terminal (CLI)
+        - Desktop app
+        - Web (claude.ai/code)
+        - IDE extension
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs
+      description: Output of `claude --debug`, if relevant. Remove tokens and other secrets.
+      render: text

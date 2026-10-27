@@ -1,6 +1,9 @@
 # adamzr-plugin-marketplace
 
-Claude Code plugins and mods by Adam Richeimer.
+[![CI](https://github.com/adamzr/adamzr-plugin-marketplace/actions/workflows/ci.yml/badge.svg)](https://github.com/adamzr/adamzr-plugin-marketplace/actions/workflows/ci.yml)
+
+Claude Code plugins and mods by Adam Richeimer. Each plugin is a valid Claude Code plugin
+and also conforms to [Agent Plugins 1.0.0](https://agent-plugins.org/specification).
 
 ## Add the marketplace
 
@@ -27,6 +30,13 @@ Then install any plugin below with `/plugin install <name>@adamzr-plugin-marketp
 ## Layout
 
 Each plugin lives in its own folder under `plugins/` and is listed in `.claude-plugin/marketplace.json`.
+A plugin carries two manifests: `.claude-plugin/plugin.json` for Claude Code, and `plugin.json`
+at the plugin root for Agent Plugins.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). Report security problems privately as described in
+[SECURITY.md](SECURITY.md). Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
