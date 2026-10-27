@@ -19,16 +19,18 @@ Works on Pro, Max, Team and Enterprise logins (windows and credits), and on an A
 At the prompt of a terminal session:
 
 ```
-/plugin install usage-awareness --marketplace adamzr/adamzr-plugin-marketplace
+/plugin marketplace add adamzr/adamzr-plugin-marketplace
+/plugin install usage-awareness@adamzr-plugin-marketplace
 ```
 
 From a shell:
 
 ```
-claude plugin install usage-awareness --marketplace adamzr/adamzr-plugin-marketplace
+claude plugin marketplace add adamzr/adamzr-plugin-marketplace
+claude plugin install usage-awareness@adamzr-plugin-marketplace
 ```
 
-Answer `y` to add the marketplace, then pick a scope. In the desktop app, click + next to the prompt box, then Plugins, Add marketplace with `adamzr/adamzr-plugin-marketplace`, then Add plugin.
+Pick a scope when asked, then run `/reload-plugins` in any session that is already open. In the desktop app, click + next to the prompt box, then Plugins, Add marketplace with `adamzr/adamzr-plugin-marketplace`, then Add plugin.
 
 To try it from a clone without installing: `claude --plugin-dir /path/to/adamzr-plugin-marketplace/plugins/usage-awareness`.
 
